@@ -43,8 +43,13 @@ pub fn render_bitmap_8x8(bytes: [u8; 8]) -> [String; 8] {
 }
 
 pub fn invert_bitmap_8x8(bytes: [u8; 8]) -> [u8; 8] {
-    // in progress
-    todo!()
+    let mut result = [0u8; 8];
+
+    for (i, byte) in bytes.iter().enumerate() {
+        result[i] = !byte;
+    }
+
+    result
 }
 
 #[cfg(test)]
@@ -71,7 +76,6 @@ mod tests {
             0b0011_1100, res[0]
         )
     }
-
     #[test]
     fn render_bitmap() {
         #[rustfmt::skip]
@@ -97,5 +101,30 @@ mod tests {
         ];
         let res = render_bitmap_8x8(bytes);
         assert_eq!(image, res)
+    }
+    #[test]
+    fn invert_bitmap() {
+        #[rustfmt::skip]
+        let source = [
+            0b0011_1100,
+            0b0100_0010,
+            0b1010_0101,
+            0b1001_1001,
+            0b1000_0001,
+            0b1010_0101,
+            0b0100_0010,
+            0b0011_1100,
+        ];
+        let inverted = [
+            0b1100_0011,
+            0b1011_1101,
+            0b0101_1010,
+            0b0110_0110,
+            0b0111_1110,
+            0b0101_1010,
+            0b1011_1101,
+            0b1100_0011,
+        ];
+        assert_eq!(invert_bitmap_8x8(source), inverted)
     }
 }
